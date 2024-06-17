@@ -9,7 +9,10 @@ declare global {
     interface Locals {
       getUser: () => Promise<APIUser>;
     }
-    // interface PageData {}
+    interface PageData {
+      user: APIUser;
+      [key: string]: any;
+    }
     // interface PageState {}
     // interface Platform {}
   }
