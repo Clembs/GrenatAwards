@@ -6,6 +6,7 @@
     onclick,
     onenter,
     onleave,
+    inline,
     variant = 'filled',
     children,
   }: {
@@ -13,6 +14,7 @@
     onclick?: () => void;
     onenter?: () => void;
     onleave?: () => void;
+    inline?: boolean;
     variant?: 'filled' | 'outlined';
     children: Snippet;
   } = $props();
@@ -21,6 +23,7 @@
 {#if href}
   <a
     {href}
+    class:inline
     data-variant={variant}
     onmouseover={onenter}
     onmouseleave={onleave}
@@ -59,6 +62,10 @@
       background-color: transparent;
       border: 1px solid var(--color-primary);
       backdrop-filter: blur(20px);
+    }
+
+    &.inline {
+      display: inline-block;
     }
   }
 </style>
