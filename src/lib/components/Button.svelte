@@ -60,6 +60,8 @@
     padding: 0.5rem 0.75rem;
     user-select: none;
     transition: opacity 150ms;
+    font-weight: 500;
+    font-size: 1.125rem;
 
     &[data-variant='filled'] {
       background-color: var(--color-primary);
