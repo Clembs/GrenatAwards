@@ -17,6 +17,7 @@
     aria-label="Voter pour {nominee.name}"
     name="nominee"
     onchange={() => onselect?.(nominee)}
+    value={nominee.id}
   />
   <label for="nominee-{nominee.id}">
     <img
@@ -49,6 +50,7 @@
     }
 
     label {
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -62,6 +64,10 @@
         width: 100%;
         height: auto;
         transition: border 300ms;
+      }
+
+      span {
+        word-break: break-all;
       }
     }
   }
