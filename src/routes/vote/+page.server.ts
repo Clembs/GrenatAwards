@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
+import { votes } from '$lib/db/schema';
 
 export const load: PageServerLoad = async ({ parent }) => {
   const { user } = await parent();
@@ -49,4 +50,43 @@ export const load: PageServerLoad = async ({ parent }) => {
     categories,
     nominees,
   };
+};
+
+export const actions: Actions = {
+  default: async ({ locals: { getUser }, request }) => {
+    const user = await getUser();
+    if (!user) throw redirect(302, '/login');
+
+    const formData = await request.formData();
+    const nomineeId = Number(formData.get('nominee')?.toString());
+
+    // If the nominee ID is not a number, redirect to the vote page
+    if (!nomineeId || isNaN(nomineeId)) throw redirect(302, '/vote');
+
+    // Get all the categories
+    const categories = await db.query.categories.findMany();
+
+    // Find the last vote from the current user by category ID
+    const lastVote = await db.query.votes.findFirst({
+      where: ({ userId }, { eq }) => eq(userId, user.id),
+      orderBy: ({ categoryId }, { desc }) => desc(categoryId),
+    });
+
+    // If the user hasn't voted on any category yet, show the first category
+    const currentCategoryId = lastVote ? lastVote.categoryId + 1 : 1;
+
+    await db.insert(votes).values({
+      userId: user.id,
+      categoryId: currentCategoryId,
+      nomineeId,
+    });
+
+    // If there are no more categories, show the results
+    if (currentCategoryId === categories.length) {
+      throw redirect(302, '/results');
+    }
+
+    // Otherwise, redirect to the next category
+    throw redirect(302, '/vote');
+  },
 };

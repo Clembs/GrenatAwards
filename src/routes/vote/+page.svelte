@@ -3,41 +3,76 @@
   import Button from '$lib/components/Button.svelte';
   import NomineeCard from '$lib/components/NomineeCard.svelte';
   import type { Nominee } from '$lib/db/types';
+  import { fade, fly } from 'svelte/transition';
 
   let { data } = $props();
-  let selectedNominee = $state<Nominee>();
+  let selectedNominee = $state<Nominee | null>();
+
+  let questionParts = $derived.by(() => {
+    const parts = data.category.name.split('*');
+
+    if (parts.length > 1) {
+      return parts;
+    } else {
+      return ['', parts[0]];
+    }
+  });
 </script>
 
 <main>
-  <form use:enhance method="post">
-    <div class="text">
-      <div class="title">
-        <div inert aria-hidden="true" class="category-number">
-          #{data.category.id}
+  {#if data.category}
+    {#key data.category}
+      <form
+        in:fly={{ x: -200, delay: 500, duration: 400 }}
+        out:fly={{ x: 200, duration: 400 }}
+        use:enhance={() =>
+          async ({ update }) => {
+            await update({
+              reset: true,
+              invalidateAll: true,
+            });
+            selectedNominee = null;
+          }}
+        method="post"
+      >
+        <div class="text">
+          <div class="title">
+            <div inert aria-hidden="true" class="category-number">
+              #{data.category.id}
+            </div>
+            Selon vous, qui {questionParts[0]}
+            <span class="headline">
+              {questionParts[1]} ?
+            </span>
+          </div>
+
+          <p>
+            {#each data.category.description.split('\n') as paragraph, i}
+              {paragraph}
+              {#if i !== data.category.description.split('\n').length - 1}
+                <br />
+              {/if}
+            {/each}
+          </p>
+
+          <footer>
+            <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
+
+            {data.category.id} vote sur {data.categories.length}
+          </footer>
         </div>
-        Selon vous, qui est la/le
-        <span class="headline">
-          {data.category.name} ?
-        </span>
-      </div>
 
-      <p>
-        {data.category.description}
-      </p>
-
-      <footer>
-        <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
-
-        {data.category.id} vote sur {data.categories.length}
-      </footer>
-    </div>
-
-    <div class="nominees">
-      {#each data.nominees as nominee}
-        <NomineeCard onselect={() => (selectedNominee = nominee)} {nominee} />
-      {/each}
-    </div>
-  </form>
+        <div class="nominees">
+          {#each data.nominees as nominee}
+            <NomineeCard
+              onselect={() => (selectedNominee = nominee)}
+              {nominee}
+            />
+          {/each}
+        </div>
+      </form>
+    {/key}
+  {/if}
 </main>
 
 <style lang="scss">
@@ -61,6 +96,7 @@
         .headline {
           display: block;
           font-size: 3rem;
+          line-height: 1.1;
           font-weight: 600;
           color: var(--color-on-surface-bright);
         }
