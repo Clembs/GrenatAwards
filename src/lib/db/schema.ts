@@ -10,7 +10,6 @@ import {
 
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
-  name: text('name').notNull().unique(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
