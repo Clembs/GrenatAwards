@@ -15,7 +15,7 @@
 <style lang="scss">
   main {
     margin: 0 auto;
-    max-width: 700px;
+    max-width: 567px;
 
     padding-left: 16px;
     padding-right: 16px;
@@ -34,6 +34,11 @@
       h1 {
         font-size: 64px;
         line-height: 70px;
+        font-weight: 600;
+      }
+
+      p {
+        opacity: 0.75;
       }
     }
   }
