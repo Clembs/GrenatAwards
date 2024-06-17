@@ -5,12 +5,13 @@
 <main>
   <div class="hero">
     <h1>
-      Votez pour les <span class="gold-gradiant">meilleurs</span> de Grenat
+      Votez pour les<br /> <span class="gold-gradiant">meilleurs</span> de Grenat
     </h1>
     <p>
-      La célébration ultime de fin d'année des gens du groupe B et d'ailleurs !
-      La cérémonie ouvre ce Mercredi en salle Grenat à 14h. Votes réservées aux
-      personnes du groupe B.
+      La célébration ultime de fin d'année des gens du groupe B et d'ailleurs !<br
+      />
+      La cérémonie ouvre ce Mercredi en salle Grenat à 14h.<br /> Votes réservées
+      aux personnes du groupe B.
     </p>
     <Button href="/vote" inline>Je vote</Button>
   </div>
@@ -18,8 +19,6 @@
 
 <style lang="scss">
   main {
-    margin: 0 auto;
-    max-width: 567px;
     padding: 0 1.5rem;
     flex: 1;
     display: flex;
@@ -31,13 +30,14 @@
       text-align: center;
 
       h1 {
-        font-size: 64px;
-        line-height: 70px;
+        font-size: 4rem;
+        line-height: 1;
         font-weight: 600;
+        font-family: var(--fonts-headings);
       }
 
       p {
-        opacity: 0.75;
+        max-width: 70ch;
       }
     }
   }
