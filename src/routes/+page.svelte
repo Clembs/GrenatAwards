@@ -1,3 +1,7 @@
+<script>
+  import Button from '$lib/components/Button.svelte';
+</script>
+
 <main>
   <div class="hero">
     <h1>
@@ -8,7 +12,7 @@
       La cérémonie ouvre ce Mercredi en salle Grenat à 14h. Votes réservées aux
       personnes du groupe B.
     </p>
-    <a href="/login">Je vote</a>
+    <Button href="/vote" inline>Je vote</Button>
   </div>
 </main>
 
