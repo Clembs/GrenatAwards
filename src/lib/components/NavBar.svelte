@@ -37,6 +37,7 @@
       font-family: var(--fonts-headings);
       font-size: 1.25rem;
       gap: 0.5rem;
+      font-weight: 500;
       color: var(--color-on-surface-bright);
     }
 
