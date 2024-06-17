@@ -58,6 +58,7 @@
     &[data-variant='outlined'] {
       background-color: transparent;
       border: 1px solid var(--color-primary);
+      backdrop-filter: blur(20px);
     }
   }
 </style>
