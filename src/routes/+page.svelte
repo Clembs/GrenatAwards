@@ -5,13 +5,14 @@
 <main>
   <div class="hero">
     <h1>
-      Votez pour les<br /> <span class="gold-gradiant">meilleurs</span> de Grenat
+      Votez pour les<br /> <span class="gold-gradiant">meilleur•es</span> de Grenat
     </h1>
     <p>
-      La célébration ultime de fin d'année des gens du groupe B et d'ailleurs !<br
-      />
-      La cérémonie ouvre ce Mercredi en salle Grenat à 14h.<br /> Votes réservées
-      aux personnes du groupe B.
+      La célébration ultime de fin d'année des gens du groupe B et d'ailleurs !
+      <br />
+      La cérémonie ouvre ce Mercredi en salle Grenat à 14h.
+      <br />
+      Votes réservés aux personnes du groupe B.
     </p>
     <Button href="/vote" inline>Je vote</Button>
   </div>
