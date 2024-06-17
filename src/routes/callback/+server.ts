@@ -60,5 +60,5 @@ export const GET: RequestHandler = async ({ url, fetch, cookies }) => {
 
   await db.insert(users).values({ id: userData.id }).onConflictDoNothing();
 
-  throw redirect(302, '/');
+  throw redirect(302, '/vote');
 };
