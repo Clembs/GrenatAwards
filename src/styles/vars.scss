@@ -1,8 +1,9 @@
 :root {
-  --fonts-headings: 'Fira Sans', sans-serif;
-  --fonts-body: 'Fira Sans', sans-serif;
+  --fonts-headings: 'Red Hat Display', sans-serif;
+  --fonts-body: 'Red Hat Text', sans-serif;
 
-  --color-brand-red: oklch(0% 1 0.5);
-  --color-background: oklch(0% 0 1);
-  --color-text: oklch(100% 0 1);
+  --color-primary: #ed1b24;
+  --color-surface: #080101;
+  --color-on-surface: #c5c0c0;
+  --color-on-surface-bright: #fff;
 }
