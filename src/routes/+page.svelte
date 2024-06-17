@@ -20,18 +20,13 @@
   main {
     margin: 0 auto;
     max-width: 567px;
-
-    padding-left: 16px;
-    padding-right: 16px;
-
+    padding: 0 1.5rem;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
-
     height: 100svh;
-
     .hero {
       text-align: center;
 
