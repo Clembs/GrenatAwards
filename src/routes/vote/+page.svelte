@@ -12,6 +12,9 @@
   <form use:enhance method="post">
     <div class="text">
       <div class="title">
+        <div inert aria-hidden="true" class="category-number">
+          #{data.category.id}
+        </div>
         Selon vous, qui est la/le
         <span class="headline">
           {data.category.name} ?
@@ -53,12 +56,26 @@
 
       .title {
         font-family: var(--fonts-headings);
+        position: relative;
 
         .headline {
           display: block;
           font-size: 3rem;
           font-weight: 600;
           color: var(--color-on-surface-bright);
+        }
+
+        .category-number {
+          position: absolute;
+          top: 50%;
+          left: -2rem;
+          transform: translateY(-50%);
+          -webkit-text-stroke-width: 1px;
+          -webkit-text-stroke-color: #6d531f;
+          font-size: 10rem;
+          z-index: -999;
+          color: var(--color-surface);
+          font-weight: 600;
         }
       }
 
