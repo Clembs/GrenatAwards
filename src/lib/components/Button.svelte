@@ -8,6 +8,7 @@
     onleave,
     inline,
     variant = 'filled',
+    disabled = false,
     children,
   }: {
     href?: string;
@@ -16,12 +17,14 @@
     onleave?: () => void;
     inline?: boolean;
     variant?: 'filled' | 'outlined';
+    disabled?: boolean;
     children: Snippet;
   } = $props();
 </script>
 
 {#if href}
   <a
+    aria-disabled={disabled}
     {href}
     class:inline
     data-variant={variant}
@@ -34,6 +37,9 @@
   </a>
 {:else}
   <button
+    type={onclick ? 'button' : 'submit'}
+    {disabled}
+    class:inline
     data-variant={variant}
     {onclick}
     onmouseover={onenter}
@@ -52,6 +58,8 @@
     color: var(--color-on-surface-bright);
     border-radius: 9rem;
     padding: 0.5rem 0.75rem;
+    user-select: none;
+    transition: opacity 150ms;
 
     &[data-variant='filled'] {
       background-color: var(--color-primary);
@@ -67,5 +75,15 @@
     &.inline {
       display: inline-block;
     }
+
+    &:hover {
+      opacity: 0.815;
+    }
+  }
+
+  button:disabled,
+  a[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 </style>
