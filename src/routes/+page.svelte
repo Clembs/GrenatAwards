@@ -21,12 +21,13 @@
 <style lang="scss">
   main {
     padding: 0 1.5rem;
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
     height: 100vh;
+    position: fixed;
+    inset: 0;
 
     &::before {
       content: '';
