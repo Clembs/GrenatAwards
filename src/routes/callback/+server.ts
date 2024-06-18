@@ -35,15 +35,6 @@ export const GET: RequestHandler = async ({ url, fetch, cookies }) => {
 
   const data: RESTPostOAuth2AccessTokenResult = await res.json();
 
-  cookies.set('access_token', data.access_token, {
-    maxAge: data.expires_in,
-    path: '/',
-  });
-
-  cookies.set('refresh_token', data.refresh_token, {
-    path: '/',
-  });
-
   const userRes = await fetch(`https://discord.com/api/v10/users/@me`, {
     headers: {
       Authorization: `Bearer ${data.access_token}`,
@@ -56,7 +47,22 @@ export const GET: RequestHandler = async ({ url, fetch, cookies }) => {
 
   const userData: RESTGetAPIUserResult = await userRes.json();
 
-  await db.insert(users).values({ id: userData.id }).onConflictDoNothing();
+  const existingUser = await db.query.users.findFirst({
+    where: ({ id }, { eq }) => eq(id, userData.id),
+  });
+
+  if (!existingUser) {
+    throw redirect(302, '/');
+  }
+
+  cookies.set('access_token', data.access_token, {
+    maxAge: data.expires_in,
+    path: '/',
+  });
+
+  cookies.set('refresh_token', data.refresh_token, {
+    path: '/',
+  });
 
   throw redirect(302, '/vote');
 };
