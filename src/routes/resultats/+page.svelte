@@ -38,8 +38,7 @@
         />
         <div class="text">
           <div class="category-name" aria-label="Catégorie :">
-            <img src="/trophy.png" alt="Icône du trophée" />
-            {parts[1] || parts[0]}
+            #{vote.categoryId} - {parts[1] || parts[0]}
           </div>
           <div class="nominee-name">
             Vous avez voté <b>{vote.nominee.name}</b>.comme {sameVotes.length}
@@ -79,17 +78,9 @@
         margin-bottom: 0.5rem;
 
         .category-name {
-          display: flex;
-          gap: 0.25rem;
-          align-items: center;
           font-weight: 500;
           font-size: 1.125rem;
           color: var(--color-on-surface-bright);
-
-          img {
-            height: 20px;
-            width: auto;
-          }
         }
       }
     }
