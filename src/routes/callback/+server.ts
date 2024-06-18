@@ -37,12 +37,10 @@ export const GET: RequestHandler = async ({ url, fetch, cookies }) => {
 
   cookies.set('access_token', data.access_token, {
     maxAge: data.expires_in,
-    sameSite: 'strict',
     path: '/',
   });
 
   cookies.set('refresh_token', data.refresh_token, {
-    sameSite: 'strict',
     path: '/',
   });
 

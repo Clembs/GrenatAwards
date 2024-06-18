@@ -7,7 +7,11 @@ export const handle: Handle = async ({ event, resolve }) => {
   let refreshToken = event.cookies.get('refresh_token');
 
   event.locals.getUser = async () => {
-    if (!accessToken && refreshToken) {
+    if (!refreshToken) {
+      return null;
+    }
+
+    if (!accessToken) {
       const res = await event.fetch(
         `https://discord.com/api/v10/oauth2/token`,
         {
@@ -26,7 +30,7 @@ export const handle: Handle = async ({ event, resolve }) => {
       );
 
       if (!res.ok) {
-        throw new Error('Failed to refresh token');
+        return null;
       }
 
       const data: RESTPostOAuth2AccessTokenResult = await res.json();
@@ -38,10 +42,6 @@ export const handle: Handle = async ({ event, resolve }) => {
       });
 
       accessToken = data.access_token;
-    }
-
-    if (!accessToken) {
-      return null;
     }
 
     const userRes = await event.fetch(`https://discord.com/api/v10/users/@me`, {
