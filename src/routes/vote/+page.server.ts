@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ parent }) => {
   );
 
   // If there are no more categories, show the results
-  if (!nextCategory) throw redirect(302, '/results');
+  if (!nextCategory) throw redirect(302, '/resultats');
 
   // Nominees are always of class 0, except for the penultimate
   // category which is class 1
@@ -83,7 +83,7 @@ export const actions: Actions = {
 
     // If there are no more categories, show the results
     if (currentCategoryId === categories.length) {
-      throw redirect(302, '/results');
+      throw redirect(302, '/resultats');
     }
 
     // Otherwise, redirect to the next category
