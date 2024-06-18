@@ -22,14 +22,14 @@
 
 <style lang="scss">
   nav {
-    position: fixed;
+    position: sticky;
     display: flex;
     justify-content: space-between;
     width: 100%;
     align-items: center;
     padding: 0.75rem 1.5rem;
     background: linear-gradient(to bottom, var(--color-surface), transparent);
-    // backdrop-filter: blur(10px);
+    z-index: 9;
 
     a {
       display: flex;
@@ -41,7 +41,7 @@
       color: var(--color-on-surface-bright);
     }
 
-    @media (max-width: 550px) {
+    @media (max-width: 800px) {
       .large-only {
         display: none;
       }

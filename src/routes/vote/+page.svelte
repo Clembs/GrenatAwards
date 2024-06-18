@@ -82,6 +82,8 @@
     gap: 1rem;
     padding: 0 4rem;
     height: 100vh;
+    position: fixed;
+    inset: 0;
 
     .text {
       height: 100%;
