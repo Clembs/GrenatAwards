@@ -7,8 +7,6 @@ export const handle: Handle = async ({ event, resolve }) => {
   let refreshToken = event.cookies.get('refresh_token');
 
   event.locals.getUser = async () => {
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
     if (!accessToken && refreshToken) {
       const res = await event.fetch(
         `https://discord.com/api/v10/oauth2/token`,
@@ -49,6 +47,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     const userRes = await event.fetch(`https://discord.com/api/v10/users/@me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        'Cache-Control': 'public, max-age=3600',
       },
     });
 
