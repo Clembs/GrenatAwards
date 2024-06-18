@@ -23,7 +23,7 @@
     <img
       height="250"
       width="250"
-      src={nominee.imageUrl || 'https://m.clembs.com/placeholder-image.png'}
+      src={nominee.imageUrl || '/placeholder.svg'}
       alt={nominee.name}
       id="img-{nominee.id}"
       aria-labelledby="label-{nominee.id}"

@@ -27,8 +27,7 @@
         <img
           height="56"
           width="56"
-          src={vote.nominee.imageUrl ||
-            'https://m.clembs.com/placeholder-image.png'}
+          src={vote.nominee.imageUrl || '/placeholder.svg'}
           alt={vote.nominee.name}
         />
         <div class="text">
