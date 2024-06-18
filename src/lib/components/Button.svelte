@@ -62,6 +62,7 @@
     transition: opacity 150ms;
     font-weight: 500;
     font-size: 1.125rem;
+    text-align: center;
 
     &[data-variant='filled'] {
       background-color: var(--color-primary);
