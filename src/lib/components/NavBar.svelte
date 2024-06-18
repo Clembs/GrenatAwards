@@ -11,10 +11,13 @@
   </a>
 
   {#if $page.data.user}
-    <Button variant="outlined">
-      <span class="large-only"> Connecté•e en tant que </span>
-      @{$page.data.user.username}
-    </Button>
+    <div class="bar">
+      <span class="bar-text">
+        <span class="large-only"> Connecté•e en tant que </span>
+        @{$page.data.user.username}
+      </span>
+      <Button variant="outlined" inline href="/logout">Se déconnecter</Button>
+    </div>
   {:else}
     <Button href="/vote">Se connecter</Button>
   {/if}
@@ -39,6 +42,10 @@
       gap: 0.5rem;
       font-weight: 500;
       color: var(--color-on-surface-bright);
+    }
+
+    .bar-text {
+      margin-right: 0.5rem;
     }
 
     @media (max-width: 800px) {
