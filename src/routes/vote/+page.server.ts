@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
 import { votes } from '$lib/db/schema';
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ parent, setHeaders }) => {
   const { user } = await parent();
 
   if (!user) throw redirect(302, '/login');
@@ -43,6 +43,8 @@ export const load: PageServerLoad = async ({ parent }) => {
     orderBy: ({ name }, { asc }) => asc(name),
     where: ({ class: classInt }, { eq }) => eq(classInt, nomineesClass),
   });
+
+  setHeaders({ 'Cache-Control': 'no-store' });
 
   return {
     user,

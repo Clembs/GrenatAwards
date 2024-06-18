@@ -3,7 +3,6 @@
   import Button from '$lib/components/Button.svelte';
   import NomineeCard from '$lib/components/NomineeCard.svelte';
   import type { Nominee } from '$lib/db/types';
-  import { fade, fly } from 'svelte/transition';
 
   let { data } = $props();
   let selectedNominee = $state<Nominee | null>();
@@ -20,59 +19,57 @@
 </script>
 
 <main>
-  {#if data.category}
-    {#key data.category}
-      <form
-        in:fly={{ x: -200, delay: 500, duration: 400 }}
-        out:fly={{ x: 200, duration: 400 }}
-        use:enhance={() =>
-          async ({ update }) => {
-            await update({
-              reset: true,
-              invalidateAll: true,
-            });
-            selectedNominee = null;
-          }}
-        method="post"
-      >
-        <div class="text">
-          <div class="title">
-            <div inert aria-hidden="true" class="category-number">
-              #{data.category.id}
-            </div>
-            Selon vous, qui {questionParts[0]}
-            <span class="headline">
-              {questionParts[1]} ?
-            </span>
-          </div>
-
-          <p>
-            {#each data.category.description.split('\n') as paragraph, i}
-              {paragraph}
-              {#if i !== data.category.description.split('\n').length - 1}
-                <br />
-              {/if}
-            {/each}
-          </p>
-
-          <footer>
-            <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
-
-            {data.category.id} vote sur {data.categories.length}
-          </footer>
+  <form
+    use:enhance={() =>
+      async ({ update }) => {
+        await update({
+          reset: true,
+          invalidateAll: true,
+        });
+        selectedNominee = null;
+      }}
+    method="post"
+  >
+    <div class="text">
+      <div class="title">
+        <div inert aria-hidden="true" class="category-number">
+          #{data.category.id}
         </div>
+        Selon vous, qui {questionParts[0]}
+        <span class="headline">
+          {questionParts[1]} ?
+        </span>
+      </div>
 
-        <div class="nominees">
-          {#each data.nominees as nominee}
-            <NomineeCard
-              onselect={() => (selectedNominee = nominee)}
-              {nominee}
-            />
-          {/each}
-        </div>
-      </form>
+      <p>
+        {#each data.category.description.split('\n') as paragraph, i}
+          {paragraph}
+          {#if i !== data.category.description.split('\n').length - 1}
+            <br />
+          {/if}
+        {/each}
+      </p>
+
+      <footer>
+        <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
+
+        {#if data.category.id === 1}
+          {data.category.id} vote
+        {:else}
+          {data.category.id} votes
+        {/if}
+        sur {data.categories.length}
+      </footer>
+    </div>
+
+    {#key data.category.id}
+      <div class="nominees">
+        {#each data.nominees as nominee}
+          <NomineeCard onselect={() => (selectedNominee = nominee)} {nominee} />
+        {/each}
+      </div>
     {/key}
-  {/if}
+  </form>
 </main>
 
 <style lang="scss">
