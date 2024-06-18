@@ -41,8 +41,10 @@
             #{vote.categoryId} - {parts[1] || parts[0]}
           </div>
           <div class="nominee-name">
-            Vous avez voté <b>{vote.nominee.name}</b>.comme {sameVotes.length}
-            votant(s) ({(sameVotes.length / otherVotes.length) * 100}%)
+            Vous avez voté <b>{vote.nominee.name}</b> comme {sameVotes.length}
+            votant(s) ({Math.round(
+              (sameVotes.length / otherVotes.length) * 100,
+            )}%)
           </div>
         </div>
       </li>
