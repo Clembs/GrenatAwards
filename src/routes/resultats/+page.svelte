@@ -18,11 +18,17 @@
 
   <h2>Vos votes</h2>
 
-  <p>Note : Vous ne pouvez pas modifier un vote antérieur !</p>
+  <p>Note : vos votes sont anonymes et définitifs.</p>
 
   <ul id="votes">
-    {#each data.votes as vote}
+    {#each data.userVotes as vote}
       {@const parts = vote.category.name.split('*')}
+      {@const otherVotes = data.votes.filter(
+        (v) => v.category.id === vote.category.id,
+      )}
+      {@const sameVotes = otherVotes.filter(
+        (v) => v.nominee.id === vote.nominee.id,
+      )}
       <li class="vote">
         <img
           height="56"
@@ -36,20 +42,21 @@
             {parts[1] || parts[0]}
           </div>
           <div class="nominee-name">
-            Vous avez voté <b>{vote.nominee.name}</b>.
+            Vous avez voté <b>{vote.nominee.name}</b>.comme {sameVotes.length}
+            votant(s) ({(sameVotes.length / otherVotes.length) * 100}%)
           </div>
         </div>
       </li>
     {/each}
   </ul>
 
-  {#if data.votes.length === 0}
+  {#if data.userVotes.length === 0}
     <div class="alert">
       Vous n'avez pas encore voté !
 
       <Button inline href="/vote">Voter</Button>
     </div>
-  {:else if data.votes.length !== data.categories.length}
+  {:else if data.userVotes.length !== data.categories.length}
     <div class="alert">
       Vous n'avez pas encore voté pour toutes les catégories !
       <Button inline href="/vote">Continuer à voter</Button>

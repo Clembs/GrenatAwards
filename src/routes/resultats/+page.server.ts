@@ -8,7 +8,6 @@ export const load: PageServerLoad = async ({ parent }) => {
   if (!user) throw redirect(302, '/login');
 
   const votes = await db.query.votes.findMany({
-    where: ({ userId }, { eq }) => eq(userId, user.id),
     orderBy: ({ categoryId }, { asc }) => asc(categoryId),
     with: {
       category: true,
@@ -16,10 +15,16 @@ export const load: PageServerLoad = async ({ parent }) => {
     },
   });
 
+  const userVotes = votes.filter((vote) => vote.userId === user.id);
+
   const categories = await db.query.categories.findMany();
 
   return {
-    votes,
+    userVotes,
+    votes: votes.map((vote) => ({
+      ...vote,
+      userId: undefined,
+    })),
     categories,
   };
 };
