@@ -26,19 +26,41 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-    height: 100svh;
+    height: 100vh;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url('/hero-image.png');
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      z-index: -1;
+
+      @media (max-width: 808px) {
+        background-size: 220%;
+      }
+    }
+
     .hero {
+      transform: translateY(-3rem);
       text-align: center;
 
       h1 {
-        font-size: 4rem;
+        font-size: clamp(3rem, 9vw, 4rem);
         line-height: 1;
         font-weight: 600;
         font-family: var(--fonts-headings);
+        text-wrap: balance;
       }
 
       p {
         max-width: 70ch;
+        text-wrap: balance;
       }
     }
   }
