@@ -147,14 +147,12 @@
 
       @media (max-width: 1000px) {
         padding: 0;
-        padding-bottom: 100px;
       }
     }
 
     @media (max-width: 1000px) {
       grid-template-columns: 1fr;
-      padding: 0rem 1.5rem;
-      padding-top: 6rem;
+      padding: 6rem 1.5rem;
     }
   }
 </style>
