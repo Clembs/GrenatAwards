@@ -9,6 +9,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 
   const votes = await db.query.votes.findMany({
     where: ({ userId }, { eq }) => eq(userId, user.id),
+    orderBy: ({ categoryId }, { asc }) => asc(categoryId),
     with: {
       category: true,
       nominee: true,
