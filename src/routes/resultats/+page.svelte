@@ -23,11 +23,9 @@
   <ul id="votes">
     {#each data.userVotes as vote}
       {@const parts = vote.category.name.split('*')}
-      {@const otherVotes = data.votes.filter(
-        (v) => v.category.id === vote.category.id,
-      )}
-      {@const sameVotes = otherVotes.filter(
-        (v) => v.nominee.id === vote.nominee.id,
+      {@const sameVotes = data.votes.filter(
+        (v) =>
+          v.categoryId === vote.categoryId && v.nomineeId === vote.nomineeId,
       )}
       <li class="vote">
         <img
@@ -42,9 +40,7 @@
           </div>
           <div class="nominee-name">
             Vous avez voté <b>{vote.nominee.name}</b> comme {sameVotes.length}
-            votant(s) ({Math.round(
-              (sameVotes.length / otherVotes.length) * 100,
-            )}%)
+            votant(s)
           </div>
         </div>
       </li>
