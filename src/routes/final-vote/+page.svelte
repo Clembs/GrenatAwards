@@ -104,7 +104,7 @@
 
       {#key data.category.id}
         <div class="nominees">
-          {#each data.nominees as nominee}
+          {#each data.nominees as nominee, idx}
             {#if nominee.nominee}
               <NomineeCard
                 onselect={() => (selectedNominee = nominee.nominee)}
@@ -114,6 +114,10 @@
           {/each}
         </div>
       {/key}
+    {:else}
+      <div class="fullscreen">
+        <h1>Patientez un peu, le prochain vote va bientôt commencer.</h1>
+      </div>
     {/if}
   </form>
 </main>
@@ -193,6 +197,20 @@
 
       @media (max-width: 1000px) {
         padding: 0;
+      }
+    }
+
+    .fullscreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100svh;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 600;
+        color: var(--color-on-surface-bright);
+        text-align: center;
       }
     }
 
