@@ -3,9 +3,47 @@
   import Button from '$lib/components/Button.svelte';
   import NomineeCard from '$lib/components/NomineeCard.svelte';
   import type { Nominee } from '$lib/db/types';
+  import supabase from '$lib/supabase';
 
   let { data } = $props();
   let selectedNominee = $state<Nominee | null>();
+
+  const votingChannel = supabase.channel('voting');
+
+  let currentCategory = $state(1);
+  let showNominees = $state(false);
+
+  votingChannel
+    .on(
+      'broadcast',
+      {
+        event: 'start',
+      },
+      ({ payload }) => {
+        currentCategory = payload.category;
+        showNominees = true;
+      },
+    )
+    .on(
+      'broadcast',
+      {
+        event: 'results',
+      },
+      () => {
+        showNominees = false;
+      },
+    )
+    .on(
+      'broadcast',
+      {
+        event: 'next',
+      },
+      () => {
+        showNominees = false;
+        currentCategory += 1;
+      },
+    )
+    .subscribe();
 
   let questionParts = $derived.by(() => {
     const parts = data.category.name.split('*');
@@ -26,54 +64,57 @@
           reset: true,
           invalidateAll: true,
         });
+        showNominees = false;
         selectedNominee = null;
       }}
     method="post"
   >
-    <div class="text">
-      <div class="title">
-        <div inert aria-hidden="true" class="category-number">
-          #{data.category.id}
+    {#if showNominees}
+      <div class="text">
+        <div class="title">
+          <div inert aria-hidden="true" class="category-number">
+            #{data.category.id}
+          </div>
+          Selon vous, qui {questionParts[0]}
+          <span class="headline">
+            {questionParts[1]} ?
+          </span>
         </div>
-        Selon vous, qui {questionParts[0]}
-        <span class="headline">
-          {questionParts[1]} ?
-        </span>
+
+        <p>
+          {#each data.category.description.split('\n') as paragraph, i}
+            {paragraph}
+            {#if i !== data.category.description.split('\n').length - 1}
+              <br />
+            {/if}
+          {/each}
+        </p>
+
+        <footer>
+          <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
+
+          {#if data.category.id === 1}
+            {data.category.id} vote
+          {:else}
+            {data.category.id} votes
+          {/if}
+          sur {data.categories.length}
+        </footer>
       </div>
 
-      <p>
-        {#each data.category.description.split('\n') as paragraph, i}
-          {paragraph}
-          {#if i !== data.category.description.split('\n').length - 1}
-            <br />
-          {/if}
-        {/each}
-      </p>
-
-      <footer>
-        <Button disabled={!selectedNominee}>Confirmer mon vote</Button>
-
-        {#if data.category.id === 1}
-          {data.category.id} vote
-        {:else}
-          {data.category.id} votes
-        {/if}
-        sur {data.categories.length}
-      </footer>
-    </div>
-
-    {#key data.category.id}
-      <div class="nominees">
-        {#each data.nominees as nominee}
-          {#if nominee.nominee}
-            <NomineeCard
-              onselect={() => (selectedNominee = nominee.nominee)}
-              nominee={nominee.nominee}
-            />
-          {/if}
-        {/each}
-      </div>
-    {/key}
+      {#key data.category.id}
+        <div class="nominees">
+          {#each data.nominees as nominee}
+            {#if nominee.nominee}
+              <NomineeCard
+                onselect={() => (selectedNominee = nominee.nominee)}
+                nominee={nominee.nominee}
+              />
+            {/if}
+          {/each}
+        </div>
+      {/key}
+    {/if}
   </form>
 </main>
 
