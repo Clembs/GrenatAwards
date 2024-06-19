@@ -46,7 +46,7 @@ export const votes = pgTable(
     categoryId: integer('category_id')
       .notNull()
       .references(() => categories.id),
-    votes: integer('votes').notNull().default(0),
+    votes: integer('votes').notNull().default(1),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.nomineeId, t.categoryId] }),
