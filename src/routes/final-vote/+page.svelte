@@ -11,7 +11,7 @@
   const votingChannel = supabase.channel('voting');
 
   let currentCategory = $state(1);
-  let showNominees = $state(false);
+  let phase: 'start' | 'results' | 'next' | 'waiting' = $state('waiting');
 
   votingChannel
     .on(
@@ -21,7 +21,7 @@
       },
       ({ payload }) => {
         currentCategory = payload.category;
-        showNominees = true;
+        phase = 'start';
       },
     )
     .on(
@@ -30,7 +30,7 @@
         event: 'results',
       },
       () => {
-        showNominees = false;
+        phase = 'results';
       },
     )
     .on(
@@ -39,7 +39,7 @@
         event: 'next',
       },
       () => {
-        showNominees = false;
+        phase = 'next';
         currentCategory += 1;
       },
     )
@@ -64,12 +64,12 @@
           reset: true,
           invalidateAll: true,
         });
-        showNominees = false;
+        phase = 'waiting';
         selectedNominee = null;
       }}
     method="post"
   >
-    {#if showNominees}
+    {#if phase === 'start'}
       <div class="text">
         <div class="title">
           <div inert aria-hidden="true" class="category-number">
@@ -114,6 +114,24 @@
           {/each}
         </div>
       {/key}
+    {:else if phase === 'waiting'}
+      <div class="fullscreen">
+        <h1>En attente du prochain vote</h1>
+      </div>
+    {:else if phase === 'next'}
+      {#each data.nominees as nominee}
+        {#if nominee.nominee}
+          <NomineeCard
+            disabled
+            onselect={() => (selectedNominee = nominee.nominee)}
+            nominee={nominee.nominee}
+          />
+        {/if}
+      {/each}
+    {:else}
+      <div class="fullscreen">
+        <h1>Regarde nos magnifiques hosts</h1>
+      </div>
     {/if}
   </form>
 </main>
@@ -193,6 +211,20 @@
 
       @media (max-width: 1000px) {
         padding: 0;
+      }
+    }
+
+    .fullscreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100svh;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 600;
+        color: var(--color-on-surface-bright);
+        text-align: center;
       }
     }
 

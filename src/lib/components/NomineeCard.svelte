@@ -4,9 +4,11 @@
   let {
     nominee,
     onselect,
+    disabled = false,
   }: {
     nominee: Nominee;
     onselect?: (nominee: Nominee) => void;
+    disabled?: boolean;
   } = $props();
 </script>
 
@@ -17,6 +19,7 @@
     aria-label="Voter pour {nominee.name}"
     name="nominee"
     onchange={() => onselect?.(nominee)}
+    {disabled}
     value={nominee.id}
   />
   <label for="nominee-{nominee.id}">
