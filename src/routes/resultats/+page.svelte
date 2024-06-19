@@ -1,6 +1,5 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
-  import { categories } from '$lib/db/schema';
 
   let { data } = $props();
 </script>

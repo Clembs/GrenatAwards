@@ -50,11 +50,15 @@
       console.log('Received payload:', payload.new);
     },
   );
+
+  let category = $derived(
+    data.categories.find((c) => c.id === currentCategory)!,
+  );
 </script>
 
 <main>
-  <h1>{data.categories[currentCategory].name}</h1>
-  <p>{data.categories[currentCategory].description}</p>
+  <h1>{category.name}</h1>
+  <p>{category.description}</p>
 
   <div class="actions">
     <Button onclick={startVoting}>Démarrer le vote</Button>
