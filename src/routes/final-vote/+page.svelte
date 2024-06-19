@@ -11,7 +11,7 @@
   const votingChannel = supabase.channel('voting');
 
   let currentCategory = $state(1);
-  let showNominees = $state(false);
+  let phase: 'start' | 'results' | 'next' | 'waiting' = $state('waiting');
 
   votingChannel
     .on(
@@ -21,7 +21,7 @@
       },
       ({ payload }) => {
         currentCategory = payload.category;
-        showNominees = true;
+        phase = 'start';
       },
     )
     .on(
@@ -30,7 +30,7 @@
         event: 'results',
       },
       () => {
-        showNominees = false;
+        phase = 'results';
       },
     )
     .on(
@@ -39,7 +39,7 @@
         event: 'next',
       },
       () => {
-        showNominees = false;
+        phase = 'next';
         currentCategory += 1;
       },
     )
@@ -64,12 +64,12 @@
           reset: true,
           invalidateAll: true,
         });
-        showNominees = false;
+        phase = 'waiting';
         selectedNominee = null;
       }}
     method="post"
   >
-    {#if showNominees}
+    {#if phase === 'start'}
       <div class="text">
         <div class="title">
           <div inert aria-hidden="true" class="category-number">
@@ -104,7 +104,7 @@
 
       {#key data.category.id}
         <div class="nominees">
-          {#each data.nominees as nominee, idx}
+          {#each data.nominees as nominee}
             {#if nominee.nominee}
               <NomineeCard
                 onselect={() => (selectedNominee = nominee.nominee)}
@@ -114,9 +114,23 @@
           {/each}
         </div>
       {/key}
+    {:else if phase === 'waiting'}
+      <div class="fullscreen">
+        <h1>En attente du prochain vote</h1>
+      </div>
+    {:else if phase === 'next'}
+      {#each data.nominees as nominee}
+        {#if nominee.nominee}
+          <NomineeCard
+            disabled
+            onselect={() => (selectedNominee = nominee.nominee)}
+            nominee={nominee.nominee}
+          />
+        {/if}
+      {/each}
     {:else}
       <div class="fullscreen">
-        <h1>Patientez un peu, le prochain vote va bientôt commencer.</h1>
+        <h1>Regarde nos magnifiques hosts</h1>
       </div>
     {/if}
   </form>
